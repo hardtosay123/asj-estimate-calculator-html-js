@@ -27,7 +27,7 @@
                         <input type="number" id="period" class="form-control" name="period" placeholder="Period Days" />
                     </div>
                     <div class="col-12">
-                        <button class="btn btn-primary">Calculate</button>
+                        <button id="calculate" class="btn btn-primary">Calculate</button>
                     </div>
                 </div>
             </div>
@@ -35,15 +35,39 @@
         <div id="result" class="w-100 mb-3">
             <div class="bg-light p-3">
                 <div class="row">
-                    <div class="col-12 col-md-6">
-
+                    <div class="col-12 col-md-6 border">
+                        <div class="p-2">
+                            <label for="amount-on-hand-that-day">Cash On Hand in that days:</label>
+                            <h2>$ <span id="amount-on-hand-that-day"></span></h2>
+                        </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        
+                    <div class="col-12 col-md-6 border">
+                        <div class="p-2">
+                            <label for="earning">Earning:</label>
+                            <h2>$ <span id="earning"></span></h2>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function getFlooredFixed(number, decimal) {
+            return (Math.floor(number * Math.pow(10, decimal)) / Math.pow(10, decimal));
+        }
+        $(document).ready(function () {
+            $("#calculate").click(async function () {
+                var amount = parseFloat($("#amount").val());
+                var days = parseInt($("#period").val());
+                var amountInTerm = amount;
+                for (var i = 0; i < days; i++) {
+                    amountInTerm += parseFloat((getFlooredFixed((amountInTerm / 850), 2) * 30).toFixed(2));
+                    
+                    $("#amount-on-hand-that-day").text(amountInTerm.toFixed(2));
+                    $("#earning").text((amountInTerm-amount).toFixed(2));
+                }
+            });
+        });
+    </script>
 </body>
 </html>
