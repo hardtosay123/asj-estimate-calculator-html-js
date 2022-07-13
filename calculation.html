@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forex Estimate Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+    <script>
+        var timeInterval;
+        function convertTZ(date, tzString) {
+            return new Date(date.toLocaleString("en-US", { timeZone: tzString }));
+        }
+        function malaysiaTime() {
+            var today = convertTZ(new Date(), "Asia/Kuala_Lumpur");
+            var year = today.getFullYear();
+            var month = ("0" + (today.getMonth() + 1).toString()).substr(-2, 2);
+            var date = ("0" + (today.getDate()).toString()).substr(-2, 2);
+            var hour = ("0" + (today.getHours()).toString()).substr(-2, 2);
+            var minute = ("0" + (today.getMinutes()).toString()).substr(-2, 2);
+            var second = ("0" + (today.getSeconds()).toString()).substr(-2, 2);
+
+            document.getElementById("time").innerHTML = `${hour}:${minute}:${second} ${date}-${month}-${year}`;
+        }
+        function startTIME() {
+            timeInterval = setInterval(malaysiaTime, 1);
+        }
+
+        function calculation() {
+            var amountTemp = document.getElementById("amount").value;
+            var USDollorRate = 4.68;
+            var RateToCoin = 850;
+
+            var forexCoin = Math.floor(amountTemp / RateToCoin * 100) / 100;
+
+            var serviceCharge = (forexCoin * 30).toFixed(2);
+            var expectEarnRate = (serviceCharge * 2).toFixed(2);
+            var expectEarning = ((serviceCharge * 4.68)).toFixed(2);
+
+            //write document
+            document.getElementById("coinPlay").innerHTML = forexCoin;
+            document.getElementById("serviceCharge").innerHTML = serviceCharge;
+            document.getElementById("targetValue").innerHTML = expectEarnRate;
+            document.getElementById("earning").innerHTML = expectEarning;
+        }
+    </script>
+</head>
+
+
+
+<body style="background-color: #DFE8EA;" onload="startTIME();">
+
+    <!--Nav bar-->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Estimate calulator</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="calculation.html">Trading Estimation</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid bg-light">
+        <div style="text-align: center;" class="mb-3 p-1">
+            <h1 style="text-align: center; color: blue;" id="time"></h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="my-3">
+            <div style="max-width: 500px;" class="mx-auto bg-light p-3">
+                <div class="row">
+                    <div class="col-12 my-3">
+                        <h2 class="border-bottom border-dark">Trading Estimation:</h2>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="amount" class="form-label font-weight-bold">Amount to Play (USD):</label>
+                        <input type="number" class="form-control" placeholder="Enter amount:" name="amount" id="amount">
+                    </div>
+                    <div class="col-12 mb-3">
+                        <button type="submit" class="btn btn-outline-success" onclick="calculation()">Calculate</button>
+                        <input type="reset" class="btn btn-outline-danger" value="Reset Button"
+                            onclick="window.location.reload();">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Result table-->
+    <div id="result" class="d-flex justify-content-center w-100 mb-3">
+        <div class="bg-light p-3">
+            <div class="row">
+                <div class="col-12 col-md-6 border">
+                    <div class="p-2">
+                        <label for="coinPlay">Amount of coin you can play with:</label>
+                        <h2>$ <span id="coinPlay"></span></h2>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 border">
+                    <div class="p-2">
+                        <label for="serviceCharge">Service Charge:</label>
+                        <h2>$ <span id="serviceCharge"></span></h2>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 border">
+                    <div class="p-2">
+                        <label for="earning">Total Earning (expect double profit on coins): </label>
+                        <h2>$ <span id="earning"></span></h2>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 border">
+                    <div class="p-2">
+                        <label for="targetValue">Target Value (expect double profit on coins): </label>
+                        <h2>$ <span id="targetValue"></span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
